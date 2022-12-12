@@ -14,6 +14,8 @@ import { EmployeeService } from '../employee.service';
                 <th>Name</th>
                 <th>Age</th>
                 <th>Slot</th>
+                <th>Start_date</th>
+                <th>Fees</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -23,6 +25,8 @@ import { EmployeeService } from '../employee.service';
                 <td>{{employee.name}}</td>
                 <td>{{employee.age}}</td>
                 <td>{{employee.slot}}</td>
+                <td>{{employee.start_date}}</td>
+                <td>{{employee.fees}}</td>
                 <td>
                     <button class="btn btn-primary me-1" [routerLink]="['edit/', employee._id]">Edit</button>
                     <button class="btn btn-danger" (click)="deleteEmployee(employee._id || '')">Delete</button>

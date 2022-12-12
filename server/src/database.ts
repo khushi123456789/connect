@@ -22,7 +22,7 @@ async function applySchemaValidation(db: mongodb.Db) {
     const jsonSchema = {
         $jsonSchema: {
             bsonType: "object",
-            required: ["name", "age", "slot"],
+            required: ["name", "age", "slot","start_date","fees"],
             additionalProperties: false,
             properties: {
                 _id: {},
@@ -39,6 +39,12 @@ async function applySchemaValidation(db: mongodb.Db) {
                     bsonType: "string",
                     description: "'slot' is required and is one of '6-7 AM', '7-8 AM', or '8-9 AM','5-6 PM'",
                     enum: ["6-7 AM", "7-8 AM", "8-9 AM","5-6 PM"],
+                },
+                start_date:{},
+                fees: {
+                    bsonType: "string",
+                    description: "'age' is required and is a string",
+                    minLength: 5
                 },
             },
         },

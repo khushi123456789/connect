@@ -22,19 +22,34 @@ import { Employee } from '../employee';
       </div>
 
       <div class="form-floating mb-3">
-        <input class="form-control" type="text" formControlName="age" placeholder="Age" required>
+        <input class="form-control" type="text" formControlName="age" placeholder="Age" required >
         <label for="age">Age</label>
       </div>
 
       <div *ngIf="age.invalid && (age.dirty || age.touched)" class="alert alert-danger">
-
         <div *ngIf="age.errors?.['required']">
           Age is required.
         </div>
-        <div *ngIf="age.errors?.['minlength']">
-          Age must be at least 5 characters long.
+        <div *ngIf="age.errors?.['min']">
+          Age must be at least 18.
         </div>
+        <div *ngIf="age.errors?.['max']">
+        Age must be at till 65.
       </div>
+      <div *ngIf="age.errors?.['pattern']" class="text-danger">Number Only</div>
+      </div>
+
+      <div class="form-floating mb-3">
+      <input class="form-control" type="Date" id="start_date" formControlName="start_date" placeholder="DD/MM/YYYY" required>
+      <label for="start_date">Start_date</label>
+    </div>
+
+    <div *ngIf="start_date.invalid && (start_date.dirty || start_date.touched)" class="alert alert-danger">
+      <div *ngIf="start_date.errors?.['required']">
+      Start_date is required.
+      </div>
+     
+    </div>
 
       <div class="mb-3">
         <div class="form-check">
@@ -56,6 +71,11 @@ import { Employee } from '../employee';
           <label class="form-check-label" for="5-6 PM">5-6 PM</label>
         </div>
       </div>
+      <div class="form-floating mb-3">
+      <input class="form-control" type="text" id="fees" formControlName="fees" placeholder="fees" required>
+      <label for="fees">Fees</label>
+    </div>
+
 
       <button class="btn btn-primary" type="submit" [disabled]="employeeForm.invalid">Add</button>
     </form>
@@ -77,7 +97,7 @@ export class EmployeeFormComponent implements OnInit {
 
   @Output()
   formSubmitted = new EventEmitter<Employee>();
-
+   
   employeeForm: FormGroup = new FormGroup({});
 
   constructor(private fb: FormBuilder) { }
@@ -85,13 +105,20 @@ export class EmployeeFormComponent implements OnInit {
   get name() { return this.employeeForm.get('name')!; }
   get age() { return this.employeeForm.get('age')!; }
   get slot() { return this.employeeForm.get('slot')!; }
+  get start_date() { return this.employeeForm.get('start_date')!; }
+  get fees() { return this.employeeForm.get('fees')!; }
+  
+  feesValue(){
 
+  }
   ngOnInit() {
     this.initialState.subscribe(employee => {
       this.employeeForm = this.fb.group({
         name: [ employee.name, [Validators.required] ],
-        age: [ employee.age, [ Validators.required, Validators.minLength(5) ] ],
-        slot: [ employee.slot, [Validators.required] ]
+        age: [ employee.age, [ Validators.required,  Validators.max(65), Validators.min(18), Validators.pattern("^[0-9]*$"),] ],
+        slot: [ employee.slot, [Validators.required] ],
+        start_date: [ employee.start_date, [Validators.required] ],
+        fees: [ {value:500,disabled: true}, [Validators.required] ],
       });
     });
 
